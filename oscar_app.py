@@ -1,8 +1,21 @@
+import os
 import requests
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 from pony.orm import *
+
+DB_PATH = "oscar_awards.db"
+DB_URL = "https://github.com/gubin-svg/OscarApp/releases/download/db/oscar_awards.db"
+
+def ensure_db():
+    if not os.path.exists(DB_PATH):
+        r = requests.get(DB_URL, timeout=60)
+        r.raise_for_status()
+        with open(DB_PATH, "wb") as f:
+            f.write(r.content)
+
+ensure_db()
 
 # =========================================================
 # Database setup
